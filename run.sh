@@ -1,0 +1,2 @@
+token=1455150718:AAHzVsnmcmm_R4K708pFuGgVkIm7cs3BzTM
+BOT_TOKEN=$token python3 bot.py
