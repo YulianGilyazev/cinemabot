@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5b6fdadb-3e8b-4fa3-8bb6-d7675dc4536d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/messages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +150,7 @@
       <workItem from="1607344079880" duration="15750000" />
       <workItem from="1607420512119" duration="6784000" />
       <workItem from="1607438237151" duration="78000" />
-      <workItem from="1607438448265" duration="9227000" />
+      <workItem from="1607438448265" duration="10787000" />
     </task>
     <servers />
   </component>
@@ -154,6 +159,17 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="418" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607260228534">
@@ -180,6 +196,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1874" height="275" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1607264110213" />
+    <state x="439" y="141" width="1031" height="831" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1607447677498">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="439" y="141" width="1031" height="831" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.27.1920.1053@0.27.1920.1053" timestamp="1607447677498" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/cinemabot$echo_bot.coverage" NAME="echo_bot Coverage Results" MODIFIED="1607258912888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
