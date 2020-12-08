@@ -5,8 +5,9 @@ from aiogram.utils import executor
 import emoji
 import os
 import asyncio
-import parser
+import src.parser as parser
 from io import BytesIO
+from src.messages import greeting_message, help_mesage
 
 
 from aiogram.types import ReplyKeyboardRemove, \
@@ -25,16 +26,6 @@ greet_kb.add(button_help)
 greet_kb.add(button_random)
 greet_kb.add(button_trending)
 
-
-help_mesage = ( 'Напиши названия фильма или воспользуйся этими кнопками\n'
-                '/trending -- популярные сейчас\n'
-                '/random -- случайный фильм\n'
-                '/help -- помощь\n'
-                'чтобы узнать подробнее о фильме нажми на /id<айдифильма>')
-
-greeting_message = ('Тебя приветствует ФильмБот! \n'
-                    'Напиши название фильма или выбери что ты хочешь сделать\n'
-                    '/trending /random /help')
 
 bot = Bot(token=os.environ['BOT_TOKEN'])
 dp = Dispatcher(bot)
