@@ -19,12 +19,14 @@ dp = Dispatcher(bot)
 @dp.message_handler(commands=["start"])
 async def send_welcome(message: types.Message):
     inline_kb_full = InlineKeyboardMarkup(row_width=2)
-    inline_kb_full.add(InlineKeyboardButton('Случайный фильм', callback_data='random'))
-    inline_kb_full.add(InlineKeyboardButton('Популярно сейчас', callback_data='trending'))
+    inline_kb_full.add(InlineKeyboardButton("Случайный фильм", callback_data="random"))
+    inline_kb_full.add(
+        InlineKeyboardButton("Популярно сейчас", callback_data="trending")
+    )
     await message.answer(greeting_message, reply_markup=inline_kb_full)
 
 
-@dp.callback_query_handler(lambda c: c.data == 'random')
+@dp.callback_query_handler(lambda c: c.data == "random")
 async def process_callback_random(callback_query: types.CallbackQuery):
     film_id = parser.get_random_film()
     film = await parser.get_film_by_id(film_id)
@@ -32,19 +34,25 @@ async def process_callback_random(callback_query: types.CallbackQuery):
     photo = await parser.get_film_poster(film)
     inline_kb_full = InlineKeyboardMarkup(row_width=2)
     if ivi is not None:
-        inline_kb_full.add(InlineKeyboardButton('IVI', url=ivi))
+        inline_kb_full.add(InlineKeyboardButton("IVI", url=ivi))
     if netflix is not None:
-        inline_kb_full.add(InlineKeyboardButton('Netflix', url=netflix))
+        inline_kb_full.add(InlineKeyboardButton("Netflix", url=netflix))
     if tmdb is not None:
-        inline_kb_full.add(InlineKeyboardButton('TMDB', url=tmdb))
+        inline_kb_full.add(InlineKeyboardButton("TMDB", url=tmdb))
     if photo is not None:
-        await bot.send_photo(callback_query.from_user.id, photo, caption=answer, reply_markup=inline_kb_full)
+        await bot.send_photo(
+            callback_query.from_user.id,
+            photo,
+            caption=answer,
+            reply_markup=inline_kb_full,
+        )
     else:
-        await bot.send_message(callback_query.from_user.id, answer, reply_markup=inline_kb_full)
+        await bot.send_message(
+            callback_query.from_user.id, answer, reply_markup=inline_kb_full
+        )
 
 
-
-@dp.callback_query_handler(lambda c: c.data == 'trending')
+@dp.callback_query_handler(lambda c: c.data == "trending")
 async def process_callback_trending(callback_query: types.CallbackQuery):
     res = await parser.get_trending()
     answer = await parser.get_films_list(res)
@@ -59,11 +67,11 @@ async def send_welcome(message: types.Message):
     photo = await parser.get_film_poster(film)
     inline_kb_full = InlineKeyboardMarkup(row_width=2)
     if ivi is not None:
-        inline_kb_full.add(InlineKeyboardButton('IVI', url=ivi))
+        inline_kb_full.add(InlineKeyboardButton("IVI", url=ivi))
     if netflix is not None:
-        inline_kb_full.add(InlineKeyboardButton('Netflix', url=netflix))
+        inline_kb_full.add(InlineKeyboardButton("Netflix", url=netflix))
     if tmdb is not None:
-        inline_kb_full.add(InlineKeyboardButton('TMDB', url=tmdb))
+        inline_kb_full.add(InlineKeyboardButton("TMDB", url=tmdb))
     if photo is not None:
         await message.answer_photo(photo, caption=answer, reply_markup=inline_kb_full)
     else:
@@ -89,11 +97,11 @@ async def send_film_by_id(message: types.Message):
     photo = await parser.get_film_poster(film)
     inline_kb_full = InlineKeyboardMarkup(row_width=2)
     if ivi is not None:
-        inline_kb_full.add(InlineKeyboardButton('IVI', url=ivi))
+        inline_kb_full.add(InlineKeyboardButton("IVI", url=ivi))
     if netflix is not None:
-        inline_kb_full.add(InlineKeyboardButton('Netflix', url=netflix))
+        inline_kb_full.add(InlineKeyboardButton("Netflix", url=netflix))
     if tmdb is not None:
-        inline_kb_full.add(InlineKeyboardButton('TMDB', url=tmdb))
+        inline_kb_full.add(InlineKeyboardButton("TMDB", url=tmdb))
     if photo is not None:
         await message.answer_photo(photo, caption=answer, reply_markup=inline_kb_full)
     else:
@@ -107,7 +115,7 @@ async def query(message: types.Message):
         await message.answer(empty_result_message)
         return
     answer = await parser.get_films_list(films)
-    if answer is None or answer == '':
+    if answer is None or answer == "":
         await message.answer(empty_result_message)
         return
     await message.answer(answer)

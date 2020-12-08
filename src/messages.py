@@ -12,7 +12,4 @@ greeting_message = (
     "/trending /random /help"
 )
 
-empty_result_message = (
-    "Ничего не найдено ☹\n"
-    "проверь, что запрос не содержит ошибок"
-)
+empty_result_message = "Ничего не найдено ☹\n" "проверь, что запрос не содержит ошибок"
