@@ -3,4 +3,3 @@ aiogram==2.11.2
 aiohttp==3.7.3
 google==3.0.0
 emoji==0.6.0
-
