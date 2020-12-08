@@ -6,26 +6,38 @@ import emoji
 import os
 import asyncio
 import parser
+from io import BytesIO
 
 
-help_mesage = '--'
+from aiogram.types import ReplyKeyboardRemove, \
+    ReplyKeyboardMarkup, KeyboardButton, \
+    InlineKeyboardMarkup, InlineKeyboardButton
+
+button_hi = KeyboardButton('Привет! 👋')
+button_help = KeyboardButton('/help -- помощь')
+button_random = KeyboardButton('/random -- случайный фильм')
+button_trending = KeyboardButton('/trending -- помощь')
+
+
+greet_kb = ReplyKeyboardMarkup()
+greet_kb.add(button_hi)
+greet_kb.add(button_help)
+greet_kb.add(button_random)
+greet_kb.add(button_trending)
+
+
+help_mesage = ( 'Напиши названия фильма или воспользуйся этими кнопками\n'
+                '/trending -- популярные сейчас\n'
+                '/random -- случайный фильм\n'
+                '/help -- помощь\n'
+                'чтобы узнать подробнее о фильме нажми на /id<айдифильма>')
+
 greeting_message = ('Тебя приветствует ФильмБот! \n'
                     'Напиши название фильма или выбери что ты хочешь сделать\n'
-                    '\\trending -- популярные сейчас\n'
-                    '\\genres -- список жанров\n'
-                    '\\help -- помощь')
-
+                    '/trending /random /help')
 
 bot = Bot(token=os.environ['BOT_TOKEN'])
 dp = Dispatcher(bot)
-
-
-def parse_film_name(film_name: str) -> str:
-    return 'film_name'
-
-
-def get_random_film() -> str:
-    return '--'
 
 
 @dp.message_handler(commands=['start'])
@@ -35,13 +47,15 @@ async def send_welcome(message: types.Message):
 
 @dp.message_handler(commands=['random'])
 async def send_welcome(message: types.Message):
-    random_film = '\n'.join(('Вот что я нашел', get_random_film()))
-    await message.answer(random_film)
+    film_id = parser.get_random_film()
+    film = await parser.get_film_by_id(film_id)
+    answer = await parser.get_film_full(film)
+    await message.answer(answer)
 
 
 @dp.message_handler(commands=['help'])
 async def send_welcome(message: types.Message):
-    await message.answer(help_mesage)
+    await message.answer(help_mesage, reply_markup=greet_kb)
 
 
 @dp.message_handler(commands=['trending'])
@@ -50,21 +64,24 @@ async def send_welcome(message: types.Message):
     answer = await parser.get_films_list(res)
     await message.answer(answer)
 
-#
-# @dp.message_handler(regexp=r"i/*")
-# async def get_by_id(message: types.Message):
-#     p = Parser()
-#     p.parse_id(int(message.text[2:]))
-#     print(message.text[2:])
-#     response, photo = p.output, p.photo
-#     await bot.send_photo(message.from_user.id, photo)
-#
-# @dp.message_handler()
-# async def query(message: types.Message):
-#     p = Parser()
-#     film_name = p.parse_query(message.text)
-#     await message.answer(film_name)
-#
+
+@dp.message_handler(regexp=r"/id*")
+async def send_film_by_id(message: types.Message):
+    film = await parser.get_film_by_id(message.text[3:])
+    answer = await parser.get_film_full(film)
+    photo = await parser.get_film_poster(film)
+    if photo is not None:
+        await message.answer_photo(photo, caption = answer)
+    else:
+        await message.answer(answer)
+
+@dp.message_handler()
+async def query(message: types.Message):
+    films = await parser.get_films_by_text(message.text)
+    answer = await parser.get_films_list(films)
+    await message.answer(answer)
+
 
 if __name__ == '__main__':
+    parser.read_ids()
     executor.start_polling(dp)
