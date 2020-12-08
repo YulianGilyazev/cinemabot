@@ -4,6 +4,7 @@ import json
 import numpy as np
 from googlesearch import search
 from src.settings import API_KEY, API_HOST, API_HOST_PICS, LANGUAGE, IDS_PATH
+import emoji
 
 top_5000_ids = []
 
@@ -11,6 +12,10 @@ top_5000_ids = []
 async def search_film_links(film_name):
     ivi_link = next(search(f'ivi {film_name}'))
     netflix_link = next(search(f'netflix {film_name}'))
+    if 'netflix.com' not in netflix_link:
+        netflix_link = None
+    if 'ivi.ru' not in ivi_link:
+        ivi_link = None
     return (ivi_link, netflix_link)
 
 def read_ids():
@@ -79,6 +84,7 @@ async def get_film_full(film):
     data["title"] = film.get("original_title")
     data["vote"] = film.get("vote_average")
     data["year"] = "--"
+    data["production_countries"] = film.get('production_countries')[:1]
     if film.get("release_date") is not None:
         try:
             data["year"] = datetime.strptime(film.get("release_date"), "%Y-%m-%d").year
@@ -90,18 +96,19 @@ async def get_film_full(film):
         for genre in data["genres"][:3]:
             genres.append(genre["name"])
     genres = ", ".join(genres)
-    link = await get_provider_link(data["id"])
+    tmdb = await get_provider_link(data["id"])
     ivi, netflix = await search_film_links(data['title'])
-    links = (f"\nTMDB:{link}\nivi:{ivi}\nnetflix:{netflix}")
+    countries = [it['name'] for it in data["production_countries"]]
+    countries_str = ', '.join(countries) + ' '
     result = (
-        f"{data['title']}({data['year']})\n"
-        f"{genres}\n"
+        f"{emoji.emojize(':movie_camera:')}{data['title']}({data['year']})\n"
+        f"{countries_str}\n{genres}\n"
         f"⭐{data['vote']}\n"
         f"{data['overview']}"
-    ) + (links if data['title'] is not None else "")
+    )
 
     if data["title"] is not None:
-        return result
+        return result, tmdb, ivi, netflix
 
 
 async def get_films_by_text(query):
