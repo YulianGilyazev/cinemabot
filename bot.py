@@ -3,7 +3,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import os
 import src.parser as parser
-from src.messages import greeting_message, help_message, empty_result_message
+from src.messages import greeting_message, help_message, empty_result_message, no_film
 
 
 from aiogram.types import (
@@ -24,6 +24,15 @@ async def send_welcome(message: types.Message):
         InlineKeyboardButton("Популярно сейчас", callback_data="trending")
     )
     await message.answer(greeting_message, reply_markup=inline_kb_full)
+
+@dp.message_handler(commands=["help"])
+async def send_welcome(message: types.Message):
+    inline_kb_full = InlineKeyboardMarkup(row_width=2)
+    inline_kb_full.add(InlineKeyboardButton("Случайный фильм", callback_data="random"))
+    inline_kb_full.add(
+        InlineKeyboardButton("Популярно сейчас", callback_data="trending")
+    )
+    await message.answer(help_message, reply_markup=inline_kb_full)
 
 
 @dp.callback_query_handler(lambda c: c.data == "random")
@@ -63,6 +72,9 @@ async def process_callback_trending(callback_query: types.CallbackQuery):
 async def send_welcome(message: types.Message):
     film_id = parser.get_random_film()
     film = await parser.get_film_by_id(film_id)
+    if film is None:
+        await message.answer(no_film)
+        return
     answer, tmdb, ivi, netflix = await parser.get_film_full(film)
     photo = await parser.get_film_poster(film)
     inline_kb_full = InlineKeyboardMarkup(row_width=2)
@@ -78,11 +90,6 @@ async def send_welcome(message: types.Message):
         await message.answer(answer, reply_markup=inline_kb_full)
 
 
-@dp.message_handler(commands=["help"])
-async def send_welcome(message: types.Message):
-    await message.answer(help_message)
-
-
 @dp.message_handler(commands=["trending"])
 async def send_welcome(message: types.Message):
     res = await parser.get_trending()
@@ -93,6 +100,9 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(regexp=r"/id*")
 async def send_film_by_id(message: types.Message):
     film = await parser.get_film_by_id(message.text[3:])
+    if film is None:
+        await message.answer(no_film)
+        return
     answer, tmdb, ivi, netflix = await parser.get_film_full(film)
     photo = await parser.get_film_poster(film)
     inline_kb_full = InlineKeyboardMarkup(row_width=2)

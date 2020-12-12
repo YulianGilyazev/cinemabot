@@ -79,6 +79,8 @@ async def get_film_poster(film):
 
 
 async def get_film_full(film):
+    if film is None:
+        return None
     data = {}
     data["id"] = film.get("id")
     data["genres"] = film.get("genres")
