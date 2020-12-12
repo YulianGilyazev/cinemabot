@@ -62,11 +62,15 @@ async def get_film_briefli(film):
     data["year"] = "--"
     if film.get("release_date") is not None:
         try:
-            data["year"] = datetime.strptime(film.get("release_date"), "%Y-%m-%d").year
+            data["year"] = datetime.strptime(
+                film.get("release_date"), "%Y-%m-%d"
+            ).year
         except Exception:
             pass
 
-    result = f"{data['title']}({data['year']}) /id{data['id']}\n" f"⭐{data['vote']}"
+    result = (
+        f"{data['title']}({data['year']}) /id{data['id']}\n" f"⭐{data['vote']}"
+    )
     if data["title"] is not None:
         return result
 
@@ -90,7 +94,9 @@ async def get_film_full(film):
     data["production_countries"] = film.get("production_countries")[:1]
     if film.get("release_date") is not None:
         try:
-            data["year"] = datetime.strptime(film.get("release_date"), "%Y-%m-%d").year
+            data["year"] = datetime.strptime(
+                film.get("release_date"), "%Y-%m-%d"
+            ).year
         except Exception:
             pass
     data["overview"] = film.get("overview")
@@ -130,7 +136,8 @@ async def get_films_by_text(query):
 async def get_film_by_id(movie_id):
     async with aiohttp.ClientSession() as session:
         async with session.get(
-            f"{API_HOST}movie/{movie_id}?api_key={API_KEY}" f"&language={LANGUAGE}"
+            f"{API_HOST}movie/{movie_id}?api_key={API_KEY}"
+            f"&language={LANGUAGE}"
         ) as response:
             if response.status != 200:
                 return None
